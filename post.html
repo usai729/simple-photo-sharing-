@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>Post your work!</title>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" href="./post_page.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="alert" id="alert">
+        <strong>Error!</strong>&nbsp;Couldn't upload the image.
+      </div>
+      <form onsubmit="return false" enctype="multipart/form-data" id="form">
+        <input
+          type="text"
+          placeholder="Title"
+          autocomplete="off"
+          value="Bluuu"
+          maxlength="200"
+          name="title"
+          required
+        />
+        <input
+          type="file"
+          id="src"
+          accept="image/*"
+          name="image"
+          required
+        /><br />
+        <textarea
+          placeholder="Describe your post..this will help us fetch your post from our users search"
+          cols="25"
+          rows="5"
+          maxlength="400"
+          name="desc"
+          required
+        ></textarea
+        ><br />
+        <button name="btn" onclick="submitPost()">Post</button>
+      </form>
+    </div>
+
+    <script>
+      const submitPost = () => {
+        var form = fetch("http://localhost:8000/upload.php", {
+          method: "POST",
+          body: new FormData(document.getElementById("form")),
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((response) => {
+            if (response.response == "OK") {
+              window.open("http://localhost:8000/index.php", "_self");
+            } else {
+              document.getElementById("alert").style.display = "flex";
+            }
+          })
+          .catch((error) => {
+            document.getElementById("alert").style.display = "flex";
+          });
+      };
+    </script>
+  </body>
+</html>
